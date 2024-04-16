@@ -1,16 +1,41 @@
 <?php
+  // I miei array
 
   $lettere_minuscole = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
   $lettere_maiuscole = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
   $numeri = ['0','1','2','3','4','5','6','7','8','9'];
   $simboli = ['!','?','&','%','$','<','>','^','+','-','*','/','(',')','[',']','{','}','@','#','_','='];
+  $pswrd_generata = [];
+  // Unisco gli array tramite array_merge
+
+  $unione_array = array_merge($lettere_minuscole, $lettere_maiuscole, $numeri, $simboli);
   
+  // Creo la funzione per estrarre casualmente un elemento da uno degli array 
+
   function estrazioneCasuale($array){
     $indice_casuale = rand(0, count($array) - 1);
     return $array[$indice_casuale];
   }
+  // Per assicurarmi che la mia password abbia almeno uno degli elementi da ciascun array pusho dentro il mio array vuoto almeno un elemento da ciascun array 
 
-   
+  array_push($pswrd_generata, estrazioneCasuale($lettere_minuscole));
+  array_push($pswrd_generata, estrazioneCasuale($lettere_maiuscole));
+  array_push($pswrd_generata, estrazioneCasuale($numeri));
+  array_push($pswrd_generata, estrazioneCasuale($simboli));
+
+  // Creo un ciclo for partendo da 4, avendo già i primi 4 elementi e ciclo fino al numero scelto dall'utente per la lunghezza della password, dopodichè pusho brutalmente sempre dentro il solito array inizialmente vuoto 
+
+   for ($i=4; $i <= $_GET['lunghezzaPassword']; $i++) { 
+       $el_casuale = estrazioneCasuale($unione_array);
+       array_push($pswrd_generata, $el_casuale);    
+   }
+
+  //  Prima mischio tutti gli elementi dentro l'array con shuffle
+   shuffle($pswrd_generata);
+
+  //  E dopo li unisco per andare a formare la password
+  
+   $pswrd_generata_unita = implode('', $pswrd_generata);
 ?>
 
 <!DOCTYPE html>
@@ -28,13 +53,13 @@
     <h1 class="text-danger">STRONG PASSWORD GENERATOR</h1>
     <h2>Genera una password sicura!</h2>
     <div class="generated-password mt-5 text-center border-df">
-      <p class="pt-2"></p>      
+      <p class="pt-2"> <?php echo $pswrd_generata_unita ?> </p>      
     </div>
     <div class="container-parametri">
       <form class="text-center" action="index.php" method="GET">
         <div class="mb-3 mt-5 d-flex flex-column align-items-center">
           <label for="lunghezzaPassword" class="form-label">Lunghezza Password</label>
-          <input type="number" class="form-control" id="lunghezzaPassword" name="lunghezzaPassword" value="">
+          <input type="number" class="form-control" id="lunghezzaPassword" name="lunghezzaPassword" min="4">
         </div>
         <button type="submit" class="btn btn-primary">Genera</button>
       </form>
