@@ -1,0 +1,21 @@
+.border-df{
+  border: 1px solid black;
+}
+
+.generated-password, .container-parametri{
+  width: 800px;
+}
+
+.generated-password{
+  height: 50px;
+}
+
+.generated-password input{
+  background-color: #cff4fc;
+  border: black;
+  height: 50px;
+}
+
+.container-parametri input{
+  width: 150px;
+}
