@@ -6,16 +6,15 @@
   $numeri = ['0','1','2','3','4','5','6','7','8','9'];
   $simboli = ['!','?','&','%','$','<','>','^','+','-','*','/','(',')','[',']','{','}','@','#','_','='];
   $pswrd_generata = [];
+  
   // Unisco gli array tramite array_merge
 
   $unione_array = array_merge($lettere_minuscole, $lettere_maiuscole, $numeri, $simboli);
   
-  // Creo la funzione per estrarre casualmente un elemento da uno degli array 
+  // Tramite il require prendo la mia funzione dal file esterno
 
-  function estrazioneCasuale($array){
-    $indice_casuale = rand(0, count($array) - 1);
-    return $array[$indice_casuale];
-  }
+  require_once __DIR__ . '/data/functions.php';
+
   // Per assicurarmi che la mia password abbia almeno uno degli elementi da ciascun array pusho dentro il mio array vuoto almeno un elemento da ciascun array 
 
   array_push($pswrd_generata, estrazioneCasuale($lettere_minuscole));
@@ -25,7 +24,7 @@
 
   // Creo un ciclo for partendo da 4, avendo già i primi 4 elementi e ciclo fino al numero scelto dall'utente per la lunghezza della password, dopodichè pusho brutalmente sempre dentro il solito array inizialmente vuoto 
 
-   for ($i=4; $i <= $_GET['lunghezzaPassword']; $i++) { 
+   for ($i=4; $i < $_GET['lunghezzaPassword']; $i++) { 
        $el_casuale = estrazioneCasuale($unione_array);
        array_push($pswrd_generata, $el_casuale);    
    }
@@ -34,7 +33,7 @@
    shuffle($pswrd_generata);
 
   //  E dopo li unisco per andare a formare la password
-  
+
    $pswrd_generata_unita = implode('', $pswrd_generata);
 ?>
 
@@ -53,7 +52,9 @@
     <h1 class="text-danger">STRONG PASSWORD GENERATOR</h1>
     <h2>Genera una password sicura!</h2>
     <div class="generated-password mt-5 text-center border-df">
-      <p class="pt-2"> <?php echo $pswrd_generata_unita ?> </p>      
+      <?php if (isset($_GET['lunghezzaPassword'])): ?>
+      <p class="pt-2"> <?php echo $pswrd_generata_unita ?> </p> 
+      <?php endif; ?>     
     </div>
     <div class="container-parametri">
       <form class="text-center" action="index.php" method="GET">
